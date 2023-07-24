@@ -55,6 +55,19 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
+        DispatchQueue.main.async {
+            self.loginViewModel.userLoginPressed(login: (self.emailTextField.text ?? ""), password: (self.passwordTextField.text ?? ""))
+            
+            if self.loginViewModel.signInProccess() {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let chatListViewController = storyboard.instantiateViewController(withIdentifier: "ChatListViewController") as! ChatListViewController
+                
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let sceneDelegate = windowScene.delegate as? SceneDelegate {
+                    sceneDelegate.window?.rootViewController = chatListViewController
+                }
+            }
+        }
     }
     @IBAction func signUpButtonPressed(_ sender: Any) {
     }
